@@ -1,0 +1,16 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: playerbonus-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: playerbonus_local
+      POSTGRES_USER: playerbonus
+      POSTGRES_PASSWORD: playerbonus_pw
+    ports:
+      - "5432:5432"
+    volumes:
+      - playerbonus_pgdata:/var/lib/postgresql/data
+
+volumes:
+  playerbonus_pgdata:
