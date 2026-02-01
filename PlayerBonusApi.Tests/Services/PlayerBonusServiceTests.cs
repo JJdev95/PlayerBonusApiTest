@@ -1,5 +1,6 @@
 using AutoMapper;
 using FluentAssertions;
+using Microsoft.AspNetCore.Http;
 using Moq;
 using PlayerBonusApi.Application.Contracts;
 using PlayerBonusApi.Application.Services;
@@ -121,6 +122,30 @@ public sealed class PlayerBonusServiceTests
         _bonusRepo.Verify(r => r.AddAsync(It.IsAny<PlayerBonus>(), It.IsAny<CancellationToken>()), Times.Never);
         _bonusRepo.Verify(r => r.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
     }
+
+    [Fact]
+    public async Task CreateAsync_WhenBonusTypeIsInvalid_Throws400AndDoesNotCallRepo()
+    {
+        // Arrange
+        const int playerId = 1;
+        const decimal amount = 50m;
+        var invalidBonusType = (BonusType)999;
+
+        var service = CreateService();
+
+        // Act
+        var act = () => service.CreateAsync(playerId, invalidBonusType, amount);
+
+        // Assert
+        await act.Should().ThrowAsync<ApiException>()
+            .Where(e => e.StatusCode == StatusCodes.Status400BadRequest);
+
+        _bonusRepo.Verify(r => r.ExistsActiveBonusAsync(It.IsAny<int>(), It.IsAny<BonusType>(), It.IsAny<CancellationToken>()), Times.Never);
+        _bonusRepo.Verify(r => r.AddAsync(It.IsAny<PlayerBonus>(), It.IsAny<CancellationToken>()), Times.Never);
+        _bonusRepo.Verify(r => r.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
+        _bonusRepo.Verify(r => r.GetByIdAsync(It.IsAny<int>(), It.IsAny<CancellationToken>()), Times.Never);
+    }
+
 
     // Update tests
 

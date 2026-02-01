@@ -38,6 +38,8 @@ public sealed class PlayerBonusService(
 
     public async Task<BonusDto> CreateAsync(int playerId, BonusType bonusType, decimal amount, CancellationToken ct = default)
     {
+        EnsureValidBonusType(bonusType);
+
         var exists = await _bonuses.ExistsActiveBonusAsync(playerId, bonusType, ct);
         if (exists)
             throw new ApiException(StatusCodes.Status409Conflict,
@@ -62,6 +64,7 @@ public sealed class PlayerBonusService(
 
     public async Task<BonusDto> UpdateAsync(int id, decimal amount, bool isActive, CancellationToken ct = default)
     {
+
         var entity = await _bonuses.GetByIdAsync(id, ct) ?? throw new KeyNotFoundException($"Bonus with id={id} not found.");
         if (isActive && !entity.IsActive)
         {
@@ -109,5 +112,12 @@ public sealed class PlayerBonusService(
         }, ct);
 
         await _bonuses.SaveChangesAsync(ct);
+    }
+
+    private static void EnsureValidBonusType(BonusType bonusType)
+    {
+        if (!Enum.IsDefined(bonusType))
+            throw new ApiException(StatusCodes.Status400BadRequest,
+                $"Invalid bonusType '{(int)bonusType}'. Allowed values: {string.Join(", ", Enum.GetValues<BonusType>().Select(x => $"{(int)x} ({x})"))}");
     }
 }

@@ -16,7 +16,24 @@ Built as an interview task with a clean layered architecture, business rules, au
 
 ---
 
-## Prerequisites
+## Public Demo
+The API is deployed and publicly accessible for review and testing.
+
+### Swagger UI (Live)
+
+The Swagger UI can be accessed at:
+
+https://playerbonusapitest-production.up.railway.app/swagger/index.html
+
+### Notes
+
+- Swagger is enabled in the hosted environment for demonstration purposes.
+- Authentication is required for secured endpoints and can be performed directly via Swagger using the Authorize button, as described in the Authentication section.
+
+
+---
+
+## Prerequisites to install locally
 
 ### Step 1: Install .NET 10 SDK
 
@@ -80,7 +97,7 @@ On startup, the application will automatically:
 ## Authentication (Local Development – Step by Step)
 
 This project uses JWT authentication.
-For local development and testing, a development-only endpoint is provided to generate a token.
+For local development and on the public demo, an endpoint is provided to generate a token.
 
 ### Step 1: Create a dev token
 
