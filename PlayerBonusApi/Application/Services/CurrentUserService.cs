@@ -1,7 +1,7 @@
 using System.Security.Claims;
 using PlayerBonusApi.Application.Contracts;
 
-namespace PlayerBonusApi.Infrastructure.Security;
+namespace PlayerBonusApi.Application.Services;
 
 public sealed class CurrentUserService(IHttpContextAccessor http) : ICurrentUserService
 {

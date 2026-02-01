@@ -23,10 +23,10 @@ Built as an interview task with a clean layered architecture, business rules, au
 Download and install the .NET 10 SDK from Microsoft here: https://dotnet.microsoft.com/en-us/download/dotnet/10.0
 
 Verify installation:
+
 - `dotnet --version`
 
---- 
-
+---
 
 ### Step 2: Install Docker
 
@@ -41,8 +41,18 @@ Verify installation:
 
 ### Step 3: Run PostgreSQL Locally (Docker)
 
-Run the following command: 
-- `docker run -d --name playerbonus-postgres -e POSTGRES_USER=playerbonus -e POSTGRES_PASSWORD=playerbonus_pw -e POSTGRES_DB=playerbonus_local -p 5432:5432 -v playerbonus_pgdata:/var/lib/postgresql/data postgres:16`
+From the solution root, start the PostgreSQL container using Docker Compose:
+
+`docker compose up -d`
+
+To stop the container:
+
+`docker compose down`
+
+To reset the database completely:
+
+`docker compose down -v`
+`docker compose up -d`
 
 ---
 
@@ -65,14 +75,12 @@ On startup, the application will automatically:
 
 - Swagger UI will be available at: http://localhost:5051/swagger
 
-
---- 
+---
 
 ## Authentication (Local Development – Step by Step)
 
 This project uses JWT authentication.
 For local development and testing, a development-only endpoint is provided to generate a token.
-
 
 ### Step 1: Create a dev token
 
@@ -81,9 +89,9 @@ Call the following endpoint: POST /api/auth/dev-token
 Example request body:
 
 {
-  "userId": "42",
-  "userName": "Local Dev",
-  "role": "Admin"
+"userId": "42",
+"userName": "Local Dev",
+"role": "Admin"
 }
 
 This returns a JWT access token.
@@ -100,8 +108,7 @@ Click Authorize
 
 ### Step 3: Use secured endpoints
 
-After authorization: All secured endpoints under /api/bonus/* are accessible now and free to be used and tested.
-
+After authorization: All secured endpoints under /api/bonus/\* are accessible now and free to be used and tested.
 
 ## Tests
 
