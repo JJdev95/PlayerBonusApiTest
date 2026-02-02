@@ -44,6 +44,7 @@ public static class ServiceCollectionExtensions
         services.AddHttpContextAccessor();
         services.AddScoped<ICurrentUserService, CurrentUserService>();
         services.AddScoped<IPlayerBonusService, PlayerBonusService>();
+        services.AddScoped<IAuthService, AuthService>();
 
         services.AddAutoMapper(cfg =>
         {
